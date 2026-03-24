@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=320" />
+  <title>DeadTab Cleaner</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-icon">🧹</div>
+    <h1 class="header-title">DeadTab Cleaner</h1>
+    <p class="header-subtitle">Track &amp; archive inactive tabs</p>
+  </header>
+
+  <!-- Stats Cards -->
+  <section class="stats">
+    <div class="stat-card">
+      <span class="stat-number" id="totalTabs">–</span>
+      <span class="stat-label">Open Tabs</span>
+    </div>
+    <div class="stat-card stat-card--accent">
+      <span class="stat-number" id="deadTabs">–</span>
+      <span class="stat-label">Dead Tabs</span>
+    </div>
+  </section>
+
+  <!-- Actions -->
+  <section class="actions">
+    <button class="btn btn--primary" id="archiveAllBtn" disabled>
+      <span class="btn-icon">📦</span> Archive All Dead Tabs
+    </button>
+    <button class="btn btn--secondary" id="scanNowBtn">
+      <span class="btn-icon">🔍</span> Scan Now
+    </button>
+  </section>
+
+  <!-- Dead Tab Candidates List -->
+  <section class="candidates-section">
+    <h2 class="section-title">Dead Tab Candidates</h2>
+    <div class="candidates-list" id="candidatesList">
+      <div class="empty-state" id="emptyState">
+        <span class="empty-icon">✨</span>
+        <p>No dead tabs found — looking good!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Settings -->
+  <section class="settings-section">
+    <h2 class="section-title">Settings</h2>
+    <div class="setting-row">
+      <label class="setting-label" for="thresholdInput">Inactivity Threshold</label>
+      <div class="setting-input-wrap">
+        <input type="number" id="thresholdInput" class="setting-input" min="1" max="365" value="3" />
+        <span class="setting-unit">days</span>
+      </div>
+    </div>
+    <div class="setting-row">
+      <label class="setting-label" for="backendUrlInput">Backend URL</label>
+      <input type="url" id="backendUrlInput" class="setting-input setting-input--wide" value="http://localhost:3000" placeholder="http://localhost:3000" />
+    </div>
+    <div class="setting-saved" id="settingsSaved">✓ Saved</div>
+  </section>
+
+  <!-- Status bar -->
+  <footer class="footer">
+    <span id="statusText">Ready</span>
+  </footer>
+
+  <script src="utils.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
