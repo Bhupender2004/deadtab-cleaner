@@ -44,6 +44,13 @@ export const createUser = async (email: string): Promise<User> => {
   };
 };
 
+export const fetchUserMe = async (apiKey: string): Promise<{ email: string; id: string }> => {
+  const { data } = await api.get('/api/users/me', {
+    headers: { Authorization: `Bearer ${apiKey}` }
+  });
+  return data;
+};
+
 export const fetchScore = async (): Promise<HabitScore> => {
   const { data } = await api.get('/api/score');
   return data;

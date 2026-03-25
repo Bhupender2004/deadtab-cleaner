@@ -21,17 +21,22 @@ router.get('/', authMiddleware, async (req, res) => {
       if (error.code === 'PGRST116') {
         // No settings found, maybe create defaults?
         const defaultSettings = {
-          inactivity_threshold_days: 3,
-          inactivity_threshold_minutes: 4320,
-          whitelist_domains: [],
-          notifications_enabled: false
+          id: 'default',
+          inactivityThresholdMinutes: 4320,
+          whitelistDomains: [],
+          notificationsEnabled: false
         };
         return res.json(defaultSettings);
       }
       throw error;
     }
 
-    res.json(settings);
+    res.json({
+      id: settings.id,
+      inactivityThresholdMinutes: settings.inactivity_threshold_minutes,
+      whitelistDomains: settings.whitelist_domains,
+      notificationsEnabled: settings.notifications_enabled
+    });
   } catch (error) {
     console.error('GET /api/settings error:', error);
     res.status(500).json({ error: 'Failed to fetch settings' });
@@ -67,7 +72,12 @@ router.put('/', authMiddleware, async (req, res) => {
       .single();
 
     if (error) throw error;
-    res.json(settings);
+    res.json({
+      id: settings.id,
+      inactivityThresholdMinutes: settings.inactivity_threshold_minutes,
+      whitelistDomains: settings.whitelist_domains,
+      notificationsEnabled: settings.notifications_enabled
+    });
   } catch (error) {
     console.error('PUT /api/settings error:', error);
     res.status(500).json({ error: 'Failed to update settings' });

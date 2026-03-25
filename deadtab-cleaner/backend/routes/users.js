@@ -76,5 +76,18 @@ router.post('/', async (req, res) => {
     });
   }
 });
+const authMiddleware = require('../middleware/auth');
+
+/**
+ * GET /api/users/me – Get current user details using API Key
+ */
+router.get('/me', authMiddleware, (req, res) => {
+  res.json({
+    id: req.user.id,
+    email: req.user.email,
+    plan: req.user.plan,
+    created_at: req.user.created_at,
+  });
+});
 
 module.exports = router;

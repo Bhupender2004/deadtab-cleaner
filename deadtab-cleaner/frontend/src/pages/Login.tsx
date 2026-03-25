@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '../store/authStore';
-import { createUser } from '../lib/api';
+import { createUser, fetchUserMe } from '../lib/api';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -38,18 +38,25 @@ export default function Login() {
     }
   };
 
-  const handleLoginExisting = (e: React.FormEvent) => {
+  const handleLoginExisting = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!apiKeyInput.trim().startsWith('dtc_')) {
+    const key = apiKeyInput.trim();
+    if (!key.startsWith('dtc_')) {
       toast.error('Invalid API Key format');
       return;
     }
     
-    // We don't have an endpoint to just verify the key and get the email,
-    // so we'll just set it. If it's invalid, the first API call on the dashboard will 401 and log them out.
-    setAuth(apiKeyInput.trim(), 'existing_user@example.com');
-    toast.success('API Key saved');
-    navigate('/dashboard');
+    setIsLoading(true);
+    try {
+      const user = await fetchUserMe(key);
+      setAuth(key, user.email);
+      toast.success('Logged in successfully');
+      navigate('/dashboard');
+    } catch (error: any) {
+      toast.error('Invalid API Key');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

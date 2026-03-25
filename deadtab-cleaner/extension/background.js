@@ -9,19 +9,46 @@ const DEFAULT_BACKEND_URL = 'http://localhost:3000';
 
 /* ─────────────────────── Helpers ─────────────────────── */
 
-/**
- * Read settings from storage with defaults.
- */
 async function getSettings() {
   try {
     const result = await chrome.storage.local.get('settings');
-    return {
+    let localSettings = {
       thresholdMinutes: 4320, // default 3 days
       backendUrl: DEFAULT_BACKEND_URL,
       apiKey: '',
       whitelist: [],
+      lastSync: 0,
       ...result.settings,
     };
+
+    // Attempt to sync from backend if API key is present, but limit to once every 1 minute
+    const now = Date.now();
+    console.log(`DeadTab Sync: Checking if we can sync... API Key exists: ${!!localSettings.apiKey}, Time since last sync: ${Math.round((now - localSettings.lastSync)/1000)}s`);
+    if (localSettings.apiKey && localSettings.backendUrl && (now - localSettings.lastSync > 60000)) {
+      console.log(`DeadTab Sync: Requesting settings from ${localSettings.backendUrl}/api/settings`);
+      try {
+        const response = await fetch(`${localSettings.backendUrl}/api/settings`, {
+          headers: { 'Authorization': `Bearer ${localSettings.apiKey}` }
+        });
+        if (response.ok) {
+          const apiSettings = await response.json();
+          console.log(`DeadTab Sync Success: Received threshold => ${apiSettings.inactivityThresholdMinutes} mins`);
+          localSettings.thresholdMinutes = apiSettings.inactivityThresholdMinutes || localSettings.thresholdMinutes;
+          localSettings.whitelist = apiSettings.whitelistDomains || localSettings.whitelist;
+          localSettings.lastSync = now;
+          // Save it back
+          await chrome.storage.local.set({ settings: localSettings });
+        } else {
+          console.warn(`DeadTab Sync Failed: HTTP ${response.status} ${response.statusText}`);
+          localSettings.lastSync = now; // Prevent spamming on failed auth
+          await chrome.storage.local.set({ settings: localSettings });
+        }
+      } catch (e) {
+        console.warn('DeadTab: Cloud sync failed, network error. ', e);
+      }
+    }
+
+    return localSettings;
   } catch (error) {
     console.error('DeadTab: getSettings error', error);
     return {
@@ -110,12 +137,14 @@ async function scanForDeadTabs() {
     const candidates = [];
 
     for (const tab of tabs) {
-      // Skip chrome:// and extension pages
+      if (tab.active) {
+        // Skip the tab the user is currently looking at
+        continue;
+      }
       if (!tab.url || tab.url.startsWith('chrome://') || tab.url.startsWith('chrome-extension://')) {
         continue;
       }
 
-      // Skip whitelisted domains
       if (settings.whitelist && settings.whitelist.length > 0) {
         try {
           const hostname = new URL(tab.url).hostname.toLowerCase();
@@ -124,17 +153,18 @@ async function scanForDeadTabs() {
             return hostname === domain || hostname.endsWith('.' + domain);
           });
           if (isWL) continue;
-        } catch (_) {
-          // Invalid URL, skip whitelist check
-        }
+        } catch (_) {}
       }
 
       const key = `tab_${tab.id}`;
       const data = await chrome.storage.local.get(key);
       const entry = data[key] || {};
-      const lastActive = entry.lastActive || now; // Treat unknown tabs as just-active
+      const lastActive = entry.lastActive || now;
+      const inactiveForMs = now - lastActive;
 
-      if (now - lastActive > thresholdMs) {
+      console.log(`DeadTab Check: Tab ${tab.id} offline for ${Math.round(inactiveForMs/1000)}s. Req: ${Math.round(thresholdMs/1000)}s`);
+
+      if (inactiveForMs > thresholdMs) {
         candidates.push({
           tabId: tab.id,
           title: tab.title || 'Untitled',
@@ -146,7 +176,7 @@ async function scanForDeadTabs() {
     }
 
     await chrome.storage.local.set({ deadTabCandidates: candidates });
-    console.log(`DeadTab: scan complete – ${candidates.length} dead tab(s) found`);
+    console.log(`DeadTab: scan complete – ${candidates.length} dead tab(s) found out of ${tabs.length} tabs`);
   } catch (error) {
     console.error('DeadTab: scanForDeadTabs error', error);
   }
@@ -317,11 +347,11 @@ chrome.runtime.onInstalled.addListener(async () => {
       await chrome.storage.local.set({ deadTabCandidates: [] });
     }
 
-    // Create the hourly alarm
+    // Create the background alarm (checks every minute)
     await chrome.alarms.create(ALARM_NAME, {
-      periodInMinutes: 60,
+      periodInMinutes: 1,
     });
-    console.log('DeadTab: hourly scan alarm created');
+    console.log('DeadTab: 1-minute scan alarm created');
 
     // Record activity for all currently open tabs
     const tabs = await chrome.tabs.query({});
@@ -334,9 +364,16 @@ chrome.runtime.onInstalled.addListener(async () => {
 });
 
 // Handle alarm
-chrome.alarms.onAlarm.addListener((alarm) => {
+chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === ALARM_NAME) {
-    console.log('DeadTab: hourly alarm triggered');
-    scanForDeadTabs();
+    console.log('DeadTab: alarm triggered');
+    await scanForDeadTabs();
+    
+    // Automatically archive the flagged dead tabs in the background
+    const result = await chrome.storage.local.get('deadTabCandidates');
+    if (result.deadTabCandidates && result.deadTabCandidates.length > 0) {
+      console.log(`DeadTab: Auto-archiving ${result.deadTabCandidates.length} tabs...`);
+      await archiveAllDead();
+    }
   }
 });
