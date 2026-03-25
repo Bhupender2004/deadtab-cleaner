@@ -37,7 +37,11 @@ api.interceptors.response.use(
 
 export const createUser = async (email: string): Promise<User> => {
   const { data } = await api.post('/api/users', { email });
-  return data.user;
+  // Map backend's api_key to frontend's apiKey
+  return {
+    ...data.user,
+    apiKey: data.user.api_key
+  };
 };
 
 export const fetchScore = async (): Promise<HabitScore> => {

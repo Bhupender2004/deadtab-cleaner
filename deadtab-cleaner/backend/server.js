@@ -1,5 +1,5 @@
 /**
- * DeadTab Cleaner – Express Server Entry Point
+ * DeadTab Cleaner – Express Server Entry Point (Restart trigger)
  */
 require('dotenv').config();
 
