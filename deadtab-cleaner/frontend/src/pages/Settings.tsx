@@ -65,13 +65,28 @@ export default function Settings() {
     });
   };
 
+  const deleteAllMutation = useMutation({
+    mutationFn: async () => {
+      const { deleteAllArchives } = await import('../lib/api');
+      return deleteAllArchives();
+    },
+    onSuccess: () => {
+      toast.success('All archives permanently deleted');
+      setDeleteConfirm('');
+      queryClient.invalidateQueries({ queryKey: ['archives'] });
+      queryClient.invalidateQueries({ queryKey: ['habitScore'] });
+    },
+    onError: () => {
+      toast.error('Failed to delete archives');
+    }
+  });
+
   const handleDeleteAll = () => {
     if (deleteConfirm !== 'DELETE') {
       toast.error('Type DELETE to confirm');
       return;
     }
-    toast.success('Wait! Deletion API is not yet wired up.');
-    setDeleteConfirm('');
+    deleteAllMutation.mutate();
   };
 
   const maskApiKey = (key: string | null) => {
@@ -215,10 +230,10 @@ export default function Settings() {
             />
             <button 
               onClick={handleDeleteAll}
-              disabled={deleteConfirm !== 'DELETE'}
+              disabled={deleteConfirm !== 'DELETE' || deleteAllMutation.isPending}
               className="btn-danger w-full sm:w-auto min-h-[44px]"
             >
-              Delete All Archives
+              {deleteAllMutation.isPending ? 'Deleting...' : 'Delete All Archives'}
             </button>
           </div>
         </div>

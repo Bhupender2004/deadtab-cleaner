@@ -23,6 +23,10 @@ async function getSettings() {
 
     // Attempt to sync from backend if API key is present, but limit to once every 1 minute
     const now = Date.now();
+    if (localSettings.backendUrl && !localSettings.backendUrl.startsWith('http://') && !localSettings.backendUrl.startsWith('https://')) {
+      localSettings.backendUrl = 'http://' + localSettings.backendUrl;
+    }
+
     console.log(`DeadTab Sync: Checking if we can sync... API Key exists: ${!!localSettings.apiKey}, Time since last sync: ${Math.round((now - localSettings.lastSync)/1000)}s`);
     if (localSettings.apiKey && localSettings.backendUrl && (now - localSettings.lastSync > 60000)) {
       console.log(`DeadTab Sync: Requesting settings from ${localSettings.backendUrl}/api/settings`);
@@ -317,6 +321,23 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       scanForDeadTabs().then(() => sendResponse({ success: true }));
       return true;
     }
+
+    if (message.type === 'triggerArchiveAll') {
+      archiveAllDead().then(sendResponse);
+      return true;
+    }
+
+    if (message.type === 'triggerArchiveOldest') {
+      archiveTab(message.tabId).then(sendResponse);
+      return true;
+    }
+
+    if (message.type === 'snoozeArchive') {
+      const snoozeUntil = Date.now() + 5 * 60 * 1000;
+      chrome.storage.local.set({ snoozeUntil }).then(() => sendResponse({ success: true }));
+      console.log('DeadTab: Snoozed alarm for 5 minutes');
+      return true;
+    }
   } catch (error) {
     console.error('DeadTab: message handler error', error);
     sendResponse({ success: false, error: error.message });
@@ -367,13 +388,33 @@ chrome.runtime.onInstalled.addListener(async () => {
 chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === ALARM_NAME) {
     console.log('DeadTab: alarm triggered');
+
+    const storage = await chrome.storage.local.get('snoozeUntil');
+    if (storage.snoozeUntil && Date.now() < storage.snoozeUntil) {
+      console.log('DeadTab: snoozed, skipping alarm check');
+      return;
+    }
+
     await scanForDeadTabs();
     
-    // Automatically archive the flagged dead tabs in the background
+    // Prompt the user if there are dead tabs
     const result = await chrome.storage.local.get('deadTabCandidates');
     if (result.deadTabCandidates && result.deadTabCandidates.length > 0) {
-      console.log(`DeadTab: Auto-archiving ${result.deadTabCandidates.length} tabs...`);
-      await archiveAllDead();
+      console.log(`DeadTab: Prompting user for ${result.deadTabCandidates.length} tabs...`);
+      
+      const oldestTab = [...result.deadTabCandidates].sort((a, b) => a.lastActive - b.lastActive)[0];
+
+      // Identify currently active tab to inject the prompt
+      const activeTabs = await chrome.tabs.query({ active: true, currentWindow: true });
+      if (activeTabs.length > 0) {
+        chrome.tabs.sendMessage(activeTabs[0].id, { 
+          type: 'showArchivePrompt', 
+          count: result.deadTabCandidates.length,
+          oldestTabId: oldestTab.tabId 
+        }).catch(() => {
+          console.warn('DeadTab: could not display prompt on active tab (likely blocked by Chrome permissions)');
+        });
+      }
     }
   }
 });

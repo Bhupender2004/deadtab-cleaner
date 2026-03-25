@@ -154,8 +154,31 @@ router.get('/archives', authMiddleware, async (req, res) => {
       );
     }
 
+    // Map to camelCase
+    const mappedArchives = filtered.map(a => ({
+      id: a.id,
+      userId: a.user_id,
+      url: a.url,
+      title: a.title,
+      domain: a.domain,
+      focusSeconds: a.focus_seconds,
+      scrollDepth: a.scroll_depth,
+      pageTextSnippet: a.page_text_snippet,
+      archivedAt: a.archived_at,
+      status: a.status,
+      notes: (a.notes || []).map(n => ({
+        id: n.id,
+        summary: n.summary,
+        intentTag: n.intent_tag,
+        topicTags: n.topic_tags,
+        readTimeSeconds: n.read_time_seconds,
+        aiModel: n.ai_model,
+        generatedAt: n.generated_at
+      }))
+    }));
+
     res.json({
-      archives: filtered,
+      archives: mappedArchives,
       pagination: {
         page: pageNum,
         limit: limitNum,
@@ -193,7 +216,29 @@ router.get('/archives/:id', authMiddleware, async (req, res) => {
       });
     }
 
-    res.json({ archive });
+    const mappedArchive = {
+      id: archive.id,
+      userId: archive.user_id,
+      url: archive.url,
+      title: archive.title,
+      domain: archive.domain,
+      focusSeconds: archive.focus_seconds,
+      scrollDepth: archive.scroll_depth,
+      pageTextSnippet: archive.page_text_snippet,
+      archivedAt: archive.archived_at,
+      status: archive.status,
+      notes: (archive.notes || []).map(n => ({
+        id: n.id,
+        summary: n.summary,
+        intentTag: n.intent_tag,
+        topicTags: n.topic_tags,
+        readTimeSeconds: n.read_time_seconds,
+        aiModel: n.ai_model,
+        generatedAt: n.generated_at
+      }))
+    };
+
+    res.json({ archive: mappedArchive });
   } catch (error) {
     console.error('GET /api/archives/:id error:', error);
     res.status(500).json({
@@ -230,6 +275,34 @@ router.delete('/archives/:id', authMiddleware, async (req, res) => {
     res.status(500).json({
       error: 'Internal Server Error',
       message: 'Unexpected error deleting archive.',
+    });
+  }
+});
+
+/**
+ * DELETE /api/archives – Delete ALL archives for the current user
+ */
+router.delete('/archives', authMiddleware, async (req, res) => {
+  try {
+    const { error } = await supabase
+      .from('archives')
+      .delete()
+      .eq('user_id', req.user.id);
+
+    if (error) {
+      console.error('Delete all archives error:', error);
+      return res.status(500).json({
+        error: 'Internal Server Error',
+        message: 'Failed to delete all archives.',
+      });
+    }
+
+    res.json({ message: 'All archives deleted successfully' });
+  } catch (error) {
+    console.error('DELETE /api/archives error:', error);
+    res.status(500).json({
+      error: 'Internal Server Error',
+      message: 'Unexpected error deleting all archives.',
     });
   }
 });

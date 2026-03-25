@@ -218,7 +218,10 @@
         if (unit === 'days') thresholdMinutes = threshold * 1440;
         if (unit === 'hours') thresholdMinutes = threshold * 60;
 
-        const backendUrl = backendUrlInput.value.trim() || 'http://localhost:3000';
+        let backendUrl = backendUrlInput.value.trim() || 'http://localhost:3000';
+        if (!backendUrl.startsWith('http://') && !backendUrl.startsWith('https://')) {
+          backendUrl = 'http://' + backendUrl;
+        }
         const apiKey = apiKeyInput.value.trim();
 
         const result = await chrome.storage.local.get('settings');

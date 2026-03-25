@@ -70,6 +70,10 @@ export const deleteArchive = async (id: string): Promise<void> => {
   await api.delete(`/api/archives/${id}`);
 };
 
+export const deleteAllArchives = async (): Promise<void> => {
+  await api.delete('/api/archives');
+};
+
 export const fetchSettings = async (): Promise<Settings> => {
   const { data } = await api.get('/api/settings');
   return data;
