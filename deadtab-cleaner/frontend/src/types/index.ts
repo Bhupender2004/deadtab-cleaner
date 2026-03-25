@@ -54,7 +54,7 @@ export interface HabitScore {
 
 export interface Settings {
   id: string;
-  inactivityThresholdDays: number;
+  inactivityThresholdMinutes: number;
   whitelistDomains: string[];
   notificationsEnabled: boolean;
 }

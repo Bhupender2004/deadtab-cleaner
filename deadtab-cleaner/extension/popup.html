@@ -51,10 +51,18 @@
   <section class="settings-section">
     <h2 class="section-title">Settings</h2>
     <div class="setting-row">
+      <label class="setting-label" for="apiKeyInput">API Key (Required)</label>
+      <input type="password" id="apiKeyInput" class="setting-input setting-input--wide" placeholder="dtc_..." />
+    </div>
+    <div class="setting-row">
       <label class="setting-label" for="thresholdInput">Inactivity Threshold</label>
-      <div class="setting-input-wrap">
-        <input type="number" id="thresholdInput" class="setting-input" min="1" max="365" value="3" />
-        <span class="setting-unit">days</span>
+      <div class="setting-input-wrap" style="display: flex; gap: 8px;">
+        <input type="number" id="thresholdInput" class="setting-input" min="1" max="9999" value="3" style="width: 60px;" />
+        <select id="thresholdUnit" class="setting-input" style="flex: 1;">
+          <option value="minutes">Minutes</option>
+          <option value="hours">Hours</option>
+          <option value="days" selected>Days</option>
+        </select>
       </div>
     </div>
     <div class="setting-row">

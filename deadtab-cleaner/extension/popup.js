@@ -13,7 +13,9 @@
   const scanNowBtn = document.getElementById('scanNowBtn');
   const candidatesList = document.getElementById('candidatesList');
   const emptyState = document.getElementById('emptyState');
+  const apiKeyInput = document.getElementById('apiKeyInput');
   const thresholdInput = document.getElementById('thresholdInput');
+  const thresholdUnit = document.getElementById('thresholdUnit');
   const backendUrlInput = document.getElementById('backendUrlInput');
   const settingsSaved = document.getElementById('settingsSaved');
   const statusText = document.getElementById('statusText');
@@ -40,7 +42,20 @@
       // Load settings
       const settingsResult = await chrome.storage.local.get('settings');
       const settings = settingsResult.settings || {};
-      thresholdInput.value = settings.thresholdDays || 3;
+      
+      const thresholdMinutes = settings.thresholdMinutes || 4320; // 3 days
+      if (thresholdMinutes % 1440 === 0) {
+        thresholdInput.value = thresholdMinutes / 1440;
+        thresholdUnit.value = 'days';
+      } else if (thresholdMinutes % 60 === 0) {
+        thresholdInput.value = thresholdMinutes / 60;
+        thresholdUnit.value = 'hours';
+      } else {
+        thresholdInput.value = thresholdMinutes;
+        thresholdUnit.value = 'minutes';
+      }
+
+      apiKeyInput.value = settings.apiKey || '';
       backendUrlInput.value = settings.backendUrl || 'http://localhost:3000';
 
       setStatus('Ready');
@@ -198,16 +213,24 @@
     saveTimeout = setTimeout(async () => {
       try {
         const threshold = Math.max(1, parseInt(thresholdInput.value, 10) || 3);
-        const backendUrl = backendUrlInput.value.trim() || 'http://localhost:3000';
+        const unit = thresholdUnit.value;
+        let thresholdMinutes = threshold;
+        if (unit === 'days') thresholdMinutes = threshold * 1440;
+        if (unit === 'hours') thresholdMinutes = threshold * 60;
 
-        thresholdInput.value = threshold;
+        const backendUrl = backendUrlInput.value.trim() || 'http://localhost:3000';
+        const apiKey = apiKeyInput.value.trim();
 
         const result = await chrome.storage.local.get('settings');
         const settings = result.settings || {};
-        settings.thresholdDays = threshold;
+        settings.thresholdMinutes = thresholdMinutes;
         settings.backendUrl = backendUrl;
+        settings.apiKey = apiKey;
 
         await chrome.storage.local.set({ settings });
+
+        // Post a message to background script to trigger a new scan based on new threshold
+        chrome.runtime.sendMessage({ type: 'triggerScan' });
 
         // Flash "Saved" indicator
         settingsSaved.classList.add('visible');
@@ -229,6 +252,8 @@
   archiveAllBtn.addEventListener('click', handleArchiveAll);
   scanNowBtn.addEventListener('click', handleScanNow);
   thresholdInput.addEventListener('input', saveSettings);
+  thresholdUnit.addEventListener('change', saveSettings);
+  apiKeyInput.addEventListener('input', saveSettings);
   backendUrlInput.addEventListener('input', saveSettings);
 
   /* ─── Init ─── */

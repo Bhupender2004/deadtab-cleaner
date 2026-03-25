@@ -16,16 +16,18 @@ async function getSettings() {
   try {
     const result = await chrome.storage.local.get('settings');
     return {
-      thresholdDays: DEFAULT_THRESHOLD_DAYS,
+      thresholdMinutes: 4320, // default 3 days
       backendUrl: DEFAULT_BACKEND_URL,
+      apiKey: '',
       whitelist: [],
       ...result.settings,
     };
   } catch (error) {
     console.error('DeadTab: getSettings error', error);
     return {
-      thresholdDays: DEFAULT_THRESHOLD_DAYS,
+      thresholdMinutes: 4320,
       backendUrl: DEFAULT_BACKEND_URL,
+      apiKey: '',
       whitelist: [],
     };
   }
@@ -101,7 +103,7 @@ async function scanForDeadTabs() {
   try {
     console.log('DeadTab: scanning for dead tabs…');
     const settings = await getSettings();
-    const thresholdMs = settings.thresholdDays * 24 * 60 * 60 * 1000;
+    const thresholdMs = settings.thresholdMinutes * 60 * 1000;
     const now = Date.now();
 
     const tabs = await chrome.tabs.query({});
@@ -192,9 +194,16 @@ async function archiveTab(tabId) {
 
     // POST to backend
     try {
+      if (!settings.apiKey) {
+        return { success: false, error: 'Missing API Key setting' };
+      }
+
       const response = await fetch(`${settings.backendUrl}/api/archive`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${settings.apiKey}`
+        },
         body: JSON.stringify(payload),
       });
 

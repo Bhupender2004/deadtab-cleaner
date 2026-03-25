@@ -1,26 +1,68 @@
 import React, { useState, useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
 import toast from 'react-hot-toast';
+import { fetchSettings, updateSettings } from '../lib/api';
 
 export default function Settings() {
   const { apiKey, userEmail } = useAuthStore();
+  const queryClient = useQueryClient();
   
-  // Local state for basic form demo (real implementation would fetch from API)
-  const [inactivityThreshold, setInactivityThreshold] = useState(3);
-  const [whitelist, setWhitelist] = useState('localhost\ngithub.com\nfigma.com');
+  const { data: settings, isLoading } = useQuery({
+    queryKey: ['settings'],
+    queryFn: fetchSettings,
+  });
+
+  const [inactivityValue, setInactivityValue] = useState<number>(3);
+  const [inactivityUnit, setInactivityUnit] = useState<string>('days');
+  const [whitelist, setWhitelist] = useState('');
   const [notifications, setNotifications] = useState(false);
-  
   const [deleteConfirm, setDeleteConfirm] = useState('');
-  const [isSaving, setIsSaving] = useState(false);
+
+  // Sync state when data loads
+  useEffect(() => {
+    if (settings) {
+      let minutes = settings.inactivityThresholdMinutes || 4320;
+      if (minutes % (24 * 60) === 0) {
+        setInactivityValue(minutes / (24 * 60));
+        setInactivityUnit('days');
+      } else if (minutes % 60 === 0) {
+        setInactivityValue(minutes / 60);
+        setInactivityUnit('hours');
+      } else {
+        setInactivityValue(minutes);
+        setInactivityUnit('minutes');
+      }
+      
+      setWhitelist(settings.whitelistDomains?.join('\n') || '');
+      setNotifications(settings.notificationsEnabled || false);
+    }
+  }, [settings]);
+
+  const updateMutation = useMutation({
+    mutationFn: updateSettings,
+    onSuccess: () => {
+      toast.success('Settings saved successfully');
+      queryClient.invalidateQueries({ queryKey: ['settings'] });
+    },
+    onError: () => {
+      toast.error('Failed to save settings');
+    }
+  });
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSaving(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsSaving(false);
-      toast.success('Settings saved successfully');
-    }, 600);
+    let totalMinutes = inactivityValue;
+    if (inactivityUnit === 'days') totalMinutes *= 24 * 60;
+    if (inactivityUnit === 'hours') totalMinutes *= 60;
+
+    const domains = whitelist.split('\n').map(d => d.trim()).filter(Boolean);
+
+    updateMutation.mutate({
+      inactivityThresholdMinutes: totalMinutes,
+      whitelistDomains: domains,
+      notificationsEnabled: notifications,
+    });
   };
 
   const handleDeleteAll = () => {
@@ -28,7 +70,7 @@ export default function Settings() {
       toast.error('Type DELETE to confirm');
       return;
     }
-    toast.success('All archives deleted (mock)');
+    toast.success('Wait! Deletion API is not yet wired up.');
     setDeleteConfirm('');
   };
 
@@ -43,6 +85,14 @@ export default function Settings() {
       toast.success('API Key copied to clipboard');
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-accent"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-300">
@@ -88,17 +138,27 @@ export default function Settings() {
           <div className="p-6 space-y-6">
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
-                Inactivity Threshold (Days)
+                Inactivity Threshold
               </label>
-              <input
-                type="number"
-                min="1"
-                max="30"
-                value={inactivityThreshold}
-                onChange={(e) => setInactivityThreshold(Number(e.target.value))}
-                className="glass-input max-w-[150px]"
-              />
-              <p className="text-xs text-slate-500 mt-1">Tabs untouched for this many days will be flagged as dead.</p>
+              <div className="flex items-center gap-3">
+                <input
+                  type="number"
+                  min="1"
+                  value={inactivityValue}
+                  onChange={(e) => setInactivityValue(Number(e.target.value))}
+                  className="glass-input max-w-[100px]"
+                />
+                <select
+                  value={inactivityUnit}
+                  onChange={(e) => setInactivityUnit(e.target.value)}
+                  className="glass-input max-w-[150px] appearance-none"
+                >
+                  <option value="minutes">Minutes</option>
+                  <option value="hours">Hours</option>
+                  <option value="days">Days</option>
+                </select>
+              </div>
+              <p className="text-xs text-slate-500 mt-1">Tabs untouched for this duration will be automatically flagged as dead and archived.</p>
             </div>
 
             <div>
@@ -129,8 +189,8 @@ export default function Settings() {
             </div>
           </div>
           <div className="p-4 bg-navy-950/50 border-t border-slate-700/50 flex justify-end">
-            <button type="submit" className="btn-primary min-h-[44px]" disabled={isSaving}>
-              {isSaving ? 'Saving...' : 'Save Settings'}
+            <button type="submit" className="btn-primary min-h-[44px]" disabled={updateMutation.isPending}>
+              {updateMutation.isPending ? 'Saving...' : 'Save Settings'}
             </button>
           </div>
         </form>

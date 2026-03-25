@@ -12,6 +12,7 @@ const healthRoutes = require('./routes/health');
 const userRoutes = require('./routes/users');
 const tabRoutes = require('./routes/tabs');
 const notesRoutes = require('./routes/notes');
+const settingsRoutes = require('./routes/settings');
 const { startNoteWorker, stopNoteWorker } = require('./jobs/noteWorker');
 
 const app = express();
@@ -27,6 +28,7 @@ app.use('/', healthRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api', tabRoutes);
 app.use('/api', notesRoutes);
+app.use('/api/settings', settingsRoutes);
 
 /* ─── 404 Handler ─── */
 app.use((req, res) => {
