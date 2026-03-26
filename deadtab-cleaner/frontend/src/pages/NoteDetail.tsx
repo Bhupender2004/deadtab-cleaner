@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
