@@ -104,7 +104,7 @@ export default function Settings() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-accent"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-slate-700"></div>
       </div>
     );
   }
@@ -112,22 +112,22 @@ export default function Settings() {
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-300">
       <header className="mb-8">
-        <h1 className="text-2xl font-bold text-white tracking-tight">Settings</h1>
-        <p className="text-slate-400 text-sm mt-1">Configure extension preferences and manage your account.</p>
+        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Settings</h1>
+        <p className="text-slate-600 text-sm mt-1">Configure extension preferences and manage your account.</p>
       </header>
 
       {/* Account Info */}
       <div className="glass-card overflow-hidden mb-6">
         <div className="p-6 border-b border-slate-200/50 bg-white/40">
-          <h2 className="text-lg font-bold text-white">Account Details</h2>
+          <h2 className="text-lg font-bold text-slate-900">Account Details</h2>
         </div>
         <div className="p-6 space-y-4">
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Email</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Email</label>
             <div className="text-slate-800">{userEmail || 'Unknown'}</div>
           </div>
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">API Key</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">API Key</label>
             <div className="flex gap-2 items-center">
               <code className="bg-transparent px-3 py-2 rounded text-slate-700 font-mono text-sm border border-slate-300">
                 {maskApiKey(apiKey)}
@@ -139,7 +139,7 @@ export default function Settings() {
                 Copy Full Key
               </button>
             </div>
-            <p className="text-xs text-slate-400 mt-1">Paste this into the extension popup if you log out.</p>
+            <p className="text-xs text-slate-600 mt-1">Paste this into the extension popup if you log out.</p>
           </div>
         </div>
       </div>
@@ -148,7 +148,7 @@ export default function Settings() {
       <div className="glass-card overflow-hidden mb-6">
         <form onSubmit={handleSave}>
           <div className="p-6 border-b border-slate-200/50 bg-white/40">
-            <h2 className="text-lg font-bold text-white">Extension Preferences</h2>
+            <h2 className="text-lg font-bold text-slate-900">Extension Preferences</h2>
           </div>
           <div className="p-6 space-y-6">
             <div>
@@ -173,7 +173,7 @@ export default function Settings() {
                   <option value="days">Days</option>
                 </select>
               </div>
-              <p className="text-xs text-slate-400 mt-1">Tabs untouched for this duration will be automatically flagged as dead and archived.</p>
+              <p className="text-xs text-slate-600 mt-1">Tabs untouched for this duration will be automatically flagged as dead and archived.</p>
             </div>
 
             <div>
@@ -187,7 +187,7 @@ export default function Settings() {
                 className="glass-input"
                 placeholder="github.com&#10;youtube.com"
               />
-              <p className="text-xs text-slate-400 mt-1">One domain per line. These domains will never be archived.</p>
+              <p className="text-xs text-slate-600 mt-1">One domain per line. These domains will never be archived.</p>
             </div>
 
             <div className="flex items-center gap-3">
@@ -196,7 +196,7 @@ export default function Settings() {
                 id="notifs"
                 checked={notifications}
                 onChange={(e) => setNotifications(e.target.checked)}
-                className="w-4 h-4 rounded bg-white/80 border-slate-200 text-purple-accent focus:ring-purple-accent"
+                className="w-4 h-4 rounded bg-white/80 border-slate-200 text-slate-700 focus:ring-slate-500"
               />
               <label htmlFor="notifs" className="text-sm font-medium text-slate-700">
                 Enable desktop notifications when tabs are archived
@@ -217,7 +217,7 @@ export default function Settings() {
           <h2 className="text-lg font-bold text-red-400">Danger Zone</h2>
         </div>
         <div className="p-6">
-          <p className="text-sm text-slate-400 mb-4">
+          <p className="text-sm text-slate-600 mb-4">
             Permanently delete all your tracked archives and AI notes. This drops your Habit Score history to zero.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">

@@ -27,7 +27,7 @@ export default function NoteDetail() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-20">
-        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-purple-accent"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-slate-700"></div>
       </div>
     );
   }
@@ -50,7 +50,7 @@ export default function NoteDetail() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-300">
-      <Link to="/archive" className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white mb-2 transition-colors">
+      <Link to="/archive" className="inline-flex items-center gap-2 text-sm text-slate-600 hover:text-slate-700 mb-2 transition-colors">
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
@@ -67,7 +67,7 @@ export default function NoteDetail() {
               className="w-10 h-10 rounded bg-white/10 flex-shrink-0" 
             />
             <div className="flex-1 min-w-0">
-              <h1 className="text-xl md:text-2xl font-bold text-white mb-2 leading-snug">
+              <h1 className="text-xl md:text-2xl font-bold text-slate-900 mb-2 leading-snug">
                 {archive.title}
               </h1>
               <a 
@@ -86,7 +86,7 @@ export default function NoteDetail() {
         {/* AI Note Content */}
         <div className="p-6 md:p-8 space-y-8">
           {(!note || !note.summary) ? (
-            <div className="text-center py-10 text-slate-400 italic">
+            <div className="text-center py-10 text-slate-600 italic">
               AI note is currently being generated or failed to process.
             </div>
           ) : (
@@ -94,8 +94,8 @@ export default function NoteDetail() {
               {/* Intent */}
               {note.intentTag && (
                 <div>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Why you opened this</h3>
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-purple-accent/10 border border-purple-accent/30 text-purple-light text-sm font-medium">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600 mb-3">Why you opened this</h3>
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-700/10 border border-slate-400/30 text-slate-700 text-sm font-medium">
                     🎯 {note.intentTag}
                   </div>
                 </div>
@@ -103,7 +103,7 @@ export default function NoteDetail() {
 
               {/* Summary */}
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">AI Summary</h3>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600 mb-3">AI Summary</h3>
                 <p className="text-slate-700 leading-relaxed text-lg bg-transparent/30 p-5 rounded-xl border border-slate-300">
                   {note.summary}
                 </p>
@@ -112,7 +112,7 @@ export default function NoteDetail() {
               {/* Meta details */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-200/50">
                 <div>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Topic Tags</h3>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Topic Tags</h3>
                   <div className="flex flex-wrap gap-2">
                     {note.topicTags?.map((tag, idx) => (
                       <span key={idx} className="px-2.5 py-1 rounded bg-slate-100 text-slate-700 text-sm">
@@ -123,7 +123,7 @@ export default function NoteDetail() {
                 </div>
                 
                 <div>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Estimated Read Time</h3>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Estimated Read Time</h3>
                   <div className="flex items-center gap-2 text-slate-700 font-medium">
                     ⏱️ {Math.ceil((note.readTimeSeconds || 0) / 60)} min read ({note.readTimeSeconds}s)
                   </div>
@@ -135,7 +135,7 @@ export default function NoteDetail() {
 
         {/* Footer Actions */}
         <div className="p-6 bg-transparent/50 border-t border-slate-200/50 flex flex-wrap items-center justify-between gap-4">
-          <div className="text-xs text-slate-400">
+          <div className="text-xs text-slate-600">
             Archived on {new Date(archive.archivedAt).toLocaleString()}
           </div>
           <div className="flex gap-3 w-full sm:w-auto">
@@ -145,7 +145,7 @@ export default function NoteDetail() {
                   deleteMutation.mutate(id!);
                 }
               }}
-              className="px-4 min-h-[44px] text-sm text-slate-400 hover:text-red-400 transition-colors"
+              className="px-4 min-h-[44px] text-sm text-slate-600 hover:text-red-600 transition-colors"
             >
               Delete
             </button>

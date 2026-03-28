@@ -4,11 +4,8 @@
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-800 antialiased min-h-screen overflow-x-hidden relative;
-    background-image: 
-      radial-gradient(at 0% 0%, hsla(253, 50%, 94%, 1) 0, transparent 50%),
-      radial-gradient(at 100% 0%, hsla(225, 60%, 92%, 1) 0, transparent 50%),
-      radial-gradient(at 50% 100%, hsla(339, 50%, 95%, 1) 0, transparent 60%);
+    @apply bg-slate-100 text-slate-800 antialiased min-h-screen overflow-x-hidden relative;
+    background-image: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
     background-attachment: fixed;
   }
 }
@@ -16,17 +13,17 @@
 @layer components {
   .btn-primary {
     @apply flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold
-           text-white bg-gradient-to-br from-purple-accent to-purple-600 
-           shadow-lg shadow-purple-accent/30
-           hover:-translate-y-[1px] hover:shadow-xl hover:shadow-purple-accent/40 
+           text-white bg-gradient-to-br from-slate-600 to-slate-800 
+           shadow-lg shadow-slate-900/20
+           hover:-translate-y-[1px] hover:shadow-xl hover:shadow-slate-900/30 
            active:translate-y-0 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
   }
   
   .btn-secondary {
     @apply flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium
-           text-slate-700 bg-white/80 border border-slate-200 
+           text-slate-700 bg-white/60 border border-slate-300 
            backdrop-blur-sm shadow-sm
-           hover:text-slate-900 hover:border-purple-accent/50 hover:bg-slate-50 hover:shadow-md 
+           hover:text-slate-900 hover:border-slate-500 hover:bg-slate-50 hover:shadow-md 
            transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
@@ -37,12 +34,12 @@
   }
 
   .glass-card {
-    @apply bg-white/70 backdrop-blur-xl border border-white/60 rounded-xl overflow-hidden shadow-xl shadow-slate-200/50;
+    @apply bg-white/50 backdrop-blur-xl border border-white/60 rounded-xl overflow-hidden shadow-xl shadow-slate-300/50;
   }
 
   .glass-input {
-    @apply w-full px-4 py-2 rounded-lg bg-white/60 backdrop-blur-sm border border-slate-200 text-slate-800 
-           focus:outline-none focus:border-purple-accent focus:ring-2 focus:ring-purple-accent/20 transition-all placeholder:text-slate-400 shadow-inner;
+    @apply w-full px-4 py-2 rounded-lg bg-white/50 backdrop-blur-sm border border-slate-300 text-slate-800 
+           focus:outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-500/20 transition-all placeholder:text-slate-500 shadow-inner;
   }
 }
 

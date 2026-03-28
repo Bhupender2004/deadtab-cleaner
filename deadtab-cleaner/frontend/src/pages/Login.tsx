@@ -62,14 +62,14 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background decoration */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-accent/20 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-slate-300/50 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
       
       <div className="glass-card w-full max-w-md p-8 relative z-10">
         <div className="text-center mb-8">
           <div className="text-4xl mb-4">🧹</div>
-          <h1 className="text-2xl font-bold text-white mb-2">DeadTab Cleaner</h1>
-          <p className="text-slate-400 text-sm">Track & archive inactive browser tabs with AI-powered context saving.</p>
+          <h1 className="text-2xl font-bold text-slate-900 mb-2">DeadTab Cleaner</h1>
+          <p className="text-slate-600 text-sm">Track & archive inactive browser tabs with AI-powered context saving.</p>
         </div>
 
         <form onSubmit={handleCreateUser} className="space-y-4 mb-8">
@@ -102,7 +102,7 @@ export default function Login() {
             <div className="w-full border-t border-slate-200/50" />
           </div>
           <div className="relative flex justify-center text-xs">
-            <span className="bg-slate-100 px-2 text-slate-400 rounded-lg">Or use existing</span>
+            <span className="bg-slate-100 px-2 text-slate-600 rounded-lg">Or use existing</span>
           </div>
         </div>
 

@@ -91,7 +91,7 @@ export default function ArchivePage() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-20">
-        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-purple-accent"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-slate-700"></div>
       </div>
     );
   }
@@ -108,15 +108,15 @@ export default function ArchivePage() {
     <div className="max-w-6xl mx-auto space-y-6 animate-in fade-in duration-300">
       <header className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Archive</h1>
-          <p className="text-slate-400 text-sm mt-1">Search and manage your dead tabs and AI notes.</p>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Archive</h1>
+          <p className="text-slate-600 text-sm mt-1">Search and manage your dead tabs and AI notes.</p>
         </div>
       </header>
 
       {/* Filters & Search Bar */}
       <div className="glass-card p-4 flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           <input
@@ -144,8 +144,8 @@ export default function ArchivePage() {
         {filteredArchives.length === 0 ? (
           <div className="glass-card p-12 text-center border-dashed">
             <span className="text-4xl block mb-4">✨</span>
-            <h3 className="text-lg font-bold text-white mb-2">No archives found</h3>
-            <p className="text-slate-400 text-sm">
+            <h3 className="text-lg font-bold text-slate-900 mb-2">No archives found</h3>
+            <p className="text-slate-600 text-sm">
               {searchTerm || domainFilter ? "Try adjusting your search or filters." : "Your archive is empty. Let some tabs die!"}
             </p>
           </div>

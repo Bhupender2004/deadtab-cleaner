@@ -41,10 +41,10 @@ export default function ArchiveCard({ archive, onDelete }: ArchiveCardProps) {
               onError={(e) => { (e.target as HTMLImageElement).src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOTRhM2I4IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTEwIDEzczIgLTEuNSAyIC0zLjVWN20wIDBoNHYyLjVjMCAyLjUgMiAzLjQgMiAzLjRoLTgiLz48L3N2Zz4='; }}
             />
             <div className="flex-1 min-w-0">
-              <h3 className="text-white font-bold leading-tight truncate" title={archive.title}>
+              <h3 className="text-slate-900 font-bold leading-tight truncate" title={archive.title}>
                 {archive.title}
               </h3>
-              <div className="flex items-center gap-2 mt-1 text-xs text-slate-400">
+              <div className="flex items-center gap-2 mt-1 text-xs text-slate-600">
                 <span className="truncate max-w-[150px]">{archive.domain}</span>
                 <span>•</span>
                 <span>{getRelativeTime(archive.archivedAt)}</span>
@@ -55,7 +55,7 @@ export default function ArchiveCard({ archive, onDelete }: ArchiveCardProps) {
           {/* AI Info */}
           <div className="flex-1 mb-4">
             {note?.intentTag && (
-              <span className="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-purple-accent/20 text-purple-light mb-2">
+              <span className="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-slate-300/50 text-slate-700 mb-2">
                 {note.intentTag}
               </span>
             )}
@@ -72,7 +72,7 @@ export default function ArchiveCard({ archive, onDelete }: ArchiveCardProps) {
               </span>
             ))}
             {note?.topicTags && note.topicTags.length > 3 && (
-              <span className="px-2 py-1 rounded-md text-xs bg-slate-100 border border-slate-200 text-slate-400">
+              <span className="px-2 py-1 rounded-md text-xs bg-slate-100 border border-slate-200 text-slate-600">
                 +{note.topicTags.length - 3}
               </span>
             )}
@@ -83,14 +83,14 @@ export default function ArchiveCard({ archive, onDelete }: ArchiveCardProps) {
         <div className="border-t border-slate-200/50 p-3 bg-transparent/30 flex justify-between items-center gap-2">
           <Link 
             to={`/archive/${archive.id}`} 
-            className="text-xs text-slate-400 hover:text-white px-2 py-1.5 rounded min-h-[44px] flex items-center"
+            className="text-xs text-slate-600 hover:text-slate-700 px-2 py-1.5 rounded min-h-[44px] flex items-center"
           >
             View Details
           </Link>
           <div className="flex gap-2">
             <button
               onClick={() => setShowConfirm(true)}
-              className="px-3 min-h-[44px] rounded-lg text-xs font-medium text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition-colors"
+              className="px-3 min-h-[44px] rounded-lg text-xs font-medium text-slate-600 hover:text-red-600 hover:bg-red-400/10 transition-colors"
             >
               Delete
             </button>
@@ -110,7 +110,7 @@ export default function ArchiveCard({ archive, onDelete }: ArchiveCardProps) {
       {showConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-transparent/80 backdrop-blur-sm">
           <div className="glass-card max-w-sm w-full p-6 bg-white/80">
-            <h3 className="text-lg font-bold text-white mb-2">Delete Archive?</h3>
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Delete Archive?</h3>
             <p className="text-sm text-slate-700 mb-6">
               This will permanently delete the AI notes and archive record for "{archive.title}". This action cannot be undone.
             </p>

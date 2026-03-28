@@ -20,15 +20,15 @@ export default function Sidebar({ currentScore = 0 }: SidebarProps) {
 
   // Score color logic
   let scoreColor = 'bg-slate-700 text-slate-700';
-  if (currentScore >= 70) scoreColor = 'bg-emerald-500 text-white';
-  else if (currentScore >= 40) scoreColor = 'bg-amber-500 text-white';
-  else if (currentScore > 0) scoreColor = 'bg-red-500 text-white';
+  if (currentScore >= 70) scoreColor = 'bg-emerald-500 text-slate-900';
+  else if (currentScore >= 40) scoreColor = 'bg-amber-500 text-slate-900';
+  else if (currentScore > 0) scoreColor = 'bg-red-500 text-slate-900';
 
   const navItemClass = ({ isActive }: { isActive: boolean }) =>
     `flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors ${
       isActive 
-        ? 'bg-purple-accent/20 text-purple-light border border-purple-accent/30' 
-        : 'text-slate-400 hover:text-slate-800 hover:bg-slate-100'
+        ? 'bg-slate-300/50 text-slate-700 border border-slate-400/30' 
+        : 'text-slate-600 hover:text-slate-800 hover:bg-slate-100'
     }`;
 
   return (
@@ -58,7 +58,7 @@ export default function Sidebar({ currentScore = 0 }: SidebarProps) {
         }`}
       >
         <div className="p-6">
-          <div className="flex items-center gap-2 mb-8 text-white">
+          <div className="flex items-center gap-2 mb-8 text-slate-900">
             <span className="text-2xl">🧹</span>
             <span className="font-bold text-lg tracking-tight">DeadTab Cleaner</span>
           </div>
@@ -96,7 +96,7 @@ export default function Sidebar({ currentScore = 0 }: SidebarProps) {
         <div className="mt-auto p-6 border-t border-slate-300">
           <button 
             onClick={handleSignOut}
-            className="flex items-center gap-3 px-4 py-3 min-h-[44px] w-full rounded-lg font-medium text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition-colors"
+            className="flex items-center gap-3 px-4 py-3 min-h-[44px] w-full rounded-lg font-medium text-slate-600 hover:text-red-600 hover:bg-red-400/10 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

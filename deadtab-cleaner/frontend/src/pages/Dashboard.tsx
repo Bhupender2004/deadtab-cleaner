@@ -10,7 +10,7 @@ export default function Dashboard() {
   });
 
   const scoreColor = useMemo(() => {
-    if (!scoreData) return 'text-slate-400';
+    if (!scoreData) return 'text-slate-600';
     if (scoreData.score >= 70) return 'text-emerald-500 drop-shadow-[0_0_15px_rgba(16,185,129,0.3)]';
     if (scoreData.score >= 40) return 'text-amber-500 drop-shadow-[0_0_15px_rgba(245,158,11,0.3)]';
     return 'text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.3)]';
@@ -19,7 +19,7 @@ export default function Dashboard() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-accent"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-slate-700"></div>
       </div>
     );
   }
@@ -28,7 +28,7 @@ export default function Dashboard() {
     return (
       <div className="glass-card p-6 bg-red-950/20 border-red-900/50">
         <h3 className="text-red-400 font-bold mb-2">Error loading dashboard</h3>
-        <p className="text-slate-400 text-sm">Please check your connection or API key.</p>
+        <p className="text-slate-600 text-sm">Please check your connection or API key.</p>
       </div>
     );
   }
@@ -47,7 +47,7 @@ export default function Dashboard() {
       <div className="flex justify-between items-end mb-1.5">
         <div>
           <span className="text-sm font-semibold text-slate-800 block">{label}</span>
-          <span className="text-xs text-slate-400">{description} • {weight}% weight</span>
+          <span className="text-xs text-slate-600">{description} • {weight}% weight</span>
         </div>
         <span className="text-sm font-mono text-slate-700">{value}/100</span>
       </div>
@@ -63,28 +63,28 @@ export default function Dashboard() {
   return (
     <div className="max-w-5xl mx-auto space-y-6 animate-in fade-in duration-500">
       <header className="mb-8">
-        <h1 className="text-2xl font-bold text-white tracking-tight">Dashboard</h1>
-        <p className="text-slate-400 text-sm mt-1">Your tab hoarding habits analyzed over the last 30 days.</p>
+        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Dashboard</h1>
+        <p className="text-slate-600 text-sm mt-1">Your tab hoarding habits analyzed over the last 30 days.</p>
       </header>
 
       {/* Top Row: Score & Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Big Score Card */}
         <div className="glass-card p-8 flex flex-col items-center justify-center md:col-span-1 relative overflow-hidden">
-          <div className="absolute -top-10 -right-10 w-32 h-32 bg-purple-accent/10 rounded-full blur-2xl pointer-events-none" />
+          <div className="absolute -top-10 -right-10 w-32 h-32 bg-slate-700/10 rounded-full blur-2xl pointer-events-none" />
           
-          <span className="text-xs font-bold tracking-widest text-slate-400 uppercase mb-4 z-10">Habit Score</span>
+          <span className="text-xs font-bold tracking-widest text-slate-600 uppercase mb-4 z-10">Habit Score</span>
           <div className={`text-7xl font-black tabular-nums tracking-tighter mb-2 z-10 transition-colors duration-500 ${scoreColor}`}>
             {score}
           </div>
-          <span className="text-sm text-slate-400 z-10 text-center mt-2">
+          <span className="text-sm text-slate-600 z-10 text-center mt-2">
             Higher is better.<br/>Based on 4 cleanup factors.
           </span>
         </div>
 
         {/* Breakdown Card */}
         <div className="glass-card p-6 md:col-span-2 flex flex-col justify-center">
-          <h3 className="text-sm font-bold tracking-wider text-slate-400 uppercase mb-6">Score Breakdown</h3>
+          <h3 className="text-sm font-bold tracking-wider text-slate-600 uppercase mb-6">Score Breakdown</h3>
           <div className="space-y-2">
             {renderFactorBar('Tab Turnover Rate', factors.tabTurnover.score, factors.tabTurnover.weight, `${factors.tabTurnover.tabsPerDay} tabs/day`)}
             {renderFactorBar('Focus Ratio', factors.focusRatio.score, factors.focusRatio.weight, 'Meaningful engagement')}
@@ -96,7 +96,7 @@ export default function Dashboard() {
 
       {/* Middle Row: Trend Chart */}
       <div className="glass-card p-6">
-        <h3 className="text-sm font-bold tracking-wider text-slate-400 uppercase mb-6">8-Week Trend</h3>
+        <h3 className="text-sm font-bold tracking-wider text-slate-600 uppercase mb-6">8-Week Trend</h3>
         <div className="h-[240px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
@@ -122,17 +122,17 @@ export default function Dashboard() {
       {/* Bottom Row: Quick Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="glass-card p-5 bg-white/50">
-          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Total Archives</span>
-          <span className="text-2xl font-bold text-white">{totalArchives}</span>
+          <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider block mb-1">Total Archives</span>
+          <span className="text-2xl font-bold text-slate-900">{totalArchives}</span>
         </div>
         <div className="glass-card p-5 bg-white/50">
-          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Tabs Saved</span>
-          <span className="text-2xl font-bold text-white">{chartData[chartData.length - 1]?.archives || 0}</span>
-          <span className="text-xs text-slate-400 ml-2">this week</span>
+          <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider block mb-1">Tabs Saved</span>
+          <span className="text-2xl font-bold text-slate-900">{chartData[chartData.length - 1]?.archives || 0}</span>
+          <span className="text-xs text-slate-600 ml-2">this week</span>
         </div>
         <div className="glass-card p-5 bg-white/50">
-          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Focus Score</span>
-          <span className="text-2xl font-bold text-white">{factors.focusRatio.score}/100</span>
+          <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider block mb-1">Focus Score</span>
+          <span className="text-2xl font-bold text-slate-900">{factors.focusRatio.score}/100</span>
         </div>
       </div>
     </div>

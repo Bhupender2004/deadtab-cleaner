@@ -41,7 +41,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
       <Sidebar currentScore={data?.score} />
       <main className="flex-1 overflow-y-auto p-4 md:p-8 md:ml-[240px] relative">
         {/* Background ambient glow */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-accent/5 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-slate-700/5 rounded-full blur-[100px] pointer-events-none" />
         {children}
       </main>
     </div>
