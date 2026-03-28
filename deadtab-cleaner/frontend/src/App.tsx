@@ -72,7 +72,7 @@ export default function App() {
       <Toaster 
         position="bottom-right"
         toastOptions={{
-          className: '!bg-navy-800 !text-slate-200 !border !border-slate-700',
+          className: '!bg-slate-100 !text-slate-800 !border !border-slate-200',
           success: { iconTheme: { primary: '#10b981', secondary: '#fff' } },
           error: { iconTheme: { primary: '#ef4444', secondary: '#fff' } },
         }} 

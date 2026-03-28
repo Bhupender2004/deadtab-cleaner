@@ -4,38 +4,45 @@
 
 @layer base {
   body {
-    @apply bg-navy-950 text-slate-200 antialiased min-h-screen overflow-x-hidden;
+    @apply bg-slate-50 text-slate-800 antialiased min-h-screen overflow-x-hidden relative;
+    background-image: 
+      radial-gradient(at 0% 0%, hsla(253, 50%, 94%, 1) 0, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(225, 60%, 92%, 1) 0, transparent 50%),
+      radial-gradient(at 50% 100%, hsla(339, 50%, 95%, 1) 0, transparent 60%);
+    background-attachment: fixed;
   }
 }
 
 @layer components {
   .btn-primary {
     @apply flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold
-           text-white bg-gradient-to-br from-purple-accent to-purple-700 
-           shadow-[0_2px_12px_var(--tw-shadow-color)] shadow-purple-glow
-           hover:-translate-y-[1px] hover:shadow-[0_4px_18px_var(--tw-shadow-color)] 
+           text-white bg-gradient-to-br from-purple-accent to-purple-600 
+           shadow-lg shadow-purple-accent/30
+           hover:-translate-y-[1px] hover:shadow-xl hover:shadow-purple-accent/40 
            active:translate-y-0 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
   }
   
   .btn-secondary {
     @apply flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium
-           text-slate-300 bg-navy-900/50 border border-purple-accent/20 
-           hover:text-white hover:border-purple-accent transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+           text-slate-700 bg-white/80 border border-slate-200 
+           backdrop-blur-sm shadow-sm
+           hover:text-slate-900 hover:border-purple-accent/50 hover:bg-slate-50 hover:shadow-md 
+           transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
   .btn-danger {
     @apply flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium
-           text-red-200 bg-red-950/40 border border-red-900/50 
-           hover:text-white hover:bg-red-900 hover:border-red-500 transition-all duration-200;
+           text-red-700 bg-red-50 border border-red-200 shadow-sm
+           hover:text-red-800 hover:bg-red-100 hover:border-red-300 transition-all duration-200;
   }
 
   .glass-card {
-    @apply bg-card-gradient backdrop-blur-md border border-purple-accent/20 rounded-xl overflow-hidden shadow-lg;
+    @apply bg-white/70 backdrop-blur-xl border border-white/60 rounded-xl overflow-hidden shadow-xl shadow-slate-200/50;
   }
 
   .glass-input {
-    @apply w-full px-4 py-2 rounded-lg bg-navy-900 border border-purple-accent/20 text-slate-200 
-           focus:outline-none focus:border-purple-accent focus:ring-1 focus:ring-purple-accent transition-all placeholder:text-slate-500;
+    @apply w-full px-4 py-2 rounded-lg bg-white/60 backdrop-blur-sm border border-slate-200 text-slate-800 
+           focus:outline-none focus:border-purple-accent focus:ring-2 focus:ring-purple-accent/20 transition-all placeholder:text-slate-400 shadow-inner;
   }
 }
 
@@ -48,9 +55,9 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #466aa0;
+  background: #cbd5e1;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #7c3aed;
+  background: #94a3b8;
 }

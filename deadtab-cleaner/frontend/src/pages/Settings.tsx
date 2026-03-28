@@ -118,18 +118,18 @@ export default function Settings() {
 
       {/* Account Info */}
       <div className="glass-card overflow-hidden mb-6">
-        <div className="p-6 border-b border-slate-700/50 bg-navy-900/40">
+        <div className="p-6 border-b border-slate-200/50 bg-white/40">
           <h2 className="text-lg font-bold text-white">Account Details</h2>
         </div>
         <div className="p-6 space-y-4">
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Email</label>
-            <div className="text-slate-200">{userEmail || 'Unknown'}</div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Email</label>
+            <div className="text-slate-800">{userEmail || 'Unknown'}</div>
           </div>
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">API Key</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">API Key</label>
             <div className="flex gap-2 items-center">
-              <code className="bg-navy-950 px-3 py-2 rounded text-slate-300 font-mono text-sm border border-slate-800">
+              <code className="bg-transparent px-3 py-2 rounded text-slate-700 font-mono text-sm border border-slate-300">
                 {maskApiKey(apiKey)}
               </code>
               <button 
@@ -139,7 +139,7 @@ export default function Settings() {
                 Copy Full Key
               </button>
             </div>
-            <p className="text-xs text-slate-500 mt-1">Paste this into the extension popup if you log out.</p>
+            <p className="text-xs text-slate-400 mt-1">Paste this into the extension popup if you log out.</p>
           </div>
         </div>
       </div>
@@ -147,12 +147,12 @@ export default function Settings() {
       {/* Extension Preferences */}
       <div className="glass-card overflow-hidden mb-6">
         <form onSubmit={handleSave}>
-          <div className="p-6 border-b border-slate-700/50 bg-navy-900/40">
+          <div className="p-6 border-b border-slate-200/50 bg-white/40">
             <h2 className="text-lg font-bold text-white">Extension Preferences</h2>
           </div>
           <div className="p-6 space-y-6">
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 Inactivity Threshold
               </label>
               <div className="flex items-center gap-3">
@@ -173,11 +173,11 @@ export default function Settings() {
                   <option value="days">Days</option>
                 </select>
               </div>
-              <p className="text-xs text-slate-500 mt-1">Tabs untouched for this duration will be automatically flagged as dead and archived.</p>
+              <p className="text-xs text-slate-400 mt-1">Tabs untouched for this duration will be automatically flagged as dead and archived.</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 Whitelist Domains
               </label>
               <textarea
@@ -187,7 +187,7 @@ export default function Settings() {
                 className="glass-input"
                 placeholder="github.com&#10;youtube.com"
               />
-              <p className="text-xs text-slate-500 mt-1">One domain per line. These domains will never be archived.</p>
+              <p className="text-xs text-slate-400 mt-1">One domain per line. These domains will never be archived.</p>
             </div>
 
             <div className="flex items-center gap-3">
@@ -196,14 +196,14 @@ export default function Settings() {
                 id="notifs"
                 checked={notifications}
                 onChange={(e) => setNotifications(e.target.checked)}
-                className="w-4 h-4 rounded bg-navy-900 border-slate-700 text-purple-accent focus:ring-purple-accent"
+                className="w-4 h-4 rounded bg-white/80 border-slate-200 text-purple-accent focus:ring-purple-accent"
               />
-              <label htmlFor="notifs" className="text-sm font-medium text-slate-300">
+              <label htmlFor="notifs" className="text-sm font-medium text-slate-700">
                 Enable desktop notifications when tabs are archived
               </label>
             </div>
           </div>
-          <div className="p-4 bg-navy-950/50 border-t border-slate-700/50 flex justify-end">
+          <div className="p-4 bg-transparent/50 border-t border-slate-200/50 flex justify-end">
             <button type="submit" className="btn-primary min-h-[44px]" disabled={updateMutation.isPending}>
               {updateMutation.isPending ? 'Saving...' : 'Save Settings'}
             </button>

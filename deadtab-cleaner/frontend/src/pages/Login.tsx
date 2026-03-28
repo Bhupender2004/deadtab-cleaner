@@ -74,7 +74,7 @@ export default function Login() {
 
         <form onSubmit={handleCreateUser} className="space-y-4 mb-8">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5" htmlFor="email">
+            <label className="block text-sm font-medium text-slate-700 mb-1.5" htmlFor="email">
               Create New Account
             </label>
             <input
@@ -99,16 +99,16 @@ export default function Login() {
 
         <div className="relative mb-8">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-700/50" />
+            <div className="w-full border-t border-slate-200/50" />
           </div>
           <div className="relative flex justify-center text-xs">
-            <span className="bg-[#1a233a] px-2 text-slate-500 rounded-lg">Or use existing</span>
+            <span className="bg-slate-100 px-2 text-slate-400 rounded-lg">Or use existing</span>
           </div>
         </div>
 
         <form onSubmit={handleLoginExisting} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5" htmlFor="apiKey">
+            <label className="block text-sm font-medium text-slate-700 mb-1.5" htmlFor="apiKey">
               Paste API Key
             </label>
             <input

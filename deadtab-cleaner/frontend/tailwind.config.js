@@ -30,8 +30,8 @@ export default {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
-        'card-gradient': 'linear-gradient(135deg, rgba(30, 42, 71, 0.65), rgba(22, 32, 54, 0.8))',
-        'accent-gradient': 'linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(30, 42, 71, 0.65))',
+        'card-gradient': 'linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(248, 250, 252, 0.9))',
+        'accent-gradient': 'linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(255, 255, 255, 0.8))',
       }
     },
   },

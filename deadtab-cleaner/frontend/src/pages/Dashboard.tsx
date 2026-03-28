@@ -46,12 +46,12 @@ export default function Dashboard() {
     <div className="mb-5 last:mb-0">
       <div className="flex justify-between items-end mb-1.5">
         <div>
-          <span className="text-sm font-semibold text-slate-200 block">{label}</span>
-          <span className="text-xs text-slate-500">{description} • {weight}% weight</span>
+          <span className="text-sm font-semibold text-slate-800 block">{label}</span>
+          <span className="text-xs text-slate-400">{description} • {weight}% weight</span>
         </div>
-        <span className="text-sm font-mono text-slate-300">{value}/100</span>
+        <span className="text-sm font-mono text-slate-700">{value}/100</span>
       </div>
-      <div className="h-2 w-full bg-navy-900 rounded-full overflow-hidden border border-slate-800">
+      <div className="h-2 w-full bg-white/80 rounded-full overflow-hidden border border-slate-300">
         <div 
           className="h-full bg-gradient-to-r from-purple-700 to-purple-accent rounded-full transition-all duration-1000 ease-out"
           style={{ width: `${value}%` }}
@@ -73,7 +73,7 @@ export default function Dashboard() {
         <div className="glass-card p-8 flex flex-col items-center justify-center md:col-span-1 relative overflow-hidden">
           <div className="absolute -top-10 -right-10 w-32 h-32 bg-purple-accent/10 rounded-full blur-2xl pointer-events-none" />
           
-          <span className="text-xs font-bold tracking-widest text-slate-500 uppercase mb-4 z-10">Habit Score</span>
+          <span className="text-xs font-bold tracking-widest text-slate-400 uppercase mb-4 z-10">Habit Score</span>
           <div className={`text-7xl font-black tabular-nums tracking-tighter mb-2 z-10 transition-colors duration-500 ${scoreColor}`}>
             {score}
           </div>
@@ -121,17 +121,17 @@ export default function Dashboard() {
 
       {/* Bottom Row: Quick Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="glass-card p-5 bg-navy-900/50">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1">Total Archives</span>
+        <div className="glass-card p-5 bg-white/50">
+          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Total Archives</span>
           <span className="text-2xl font-bold text-white">{totalArchives}</span>
         </div>
-        <div className="glass-card p-5 bg-navy-900/50">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1">Tabs Saved</span>
+        <div className="glass-card p-5 bg-white/50">
+          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Tabs Saved</span>
           <span className="text-2xl font-bold text-white">{chartData[chartData.length - 1]?.archives || 0}</span>
-          <span className="text-xs text-slate-500 ml-2">this week</span>
+          <span className="text-xs text-slate-400 ml-2">this week</span>
         </div>
-        <div className="glass-card p-5 bg-navy-900/50">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1">Focus Score</span>
+        <div className="glass-card p-5 bg-white/50">
+          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Focus Score</span>
           <span className="text-2xl font-bold text-white">{factors.focusRatio.score}/100</span>
         </div>
       </div>

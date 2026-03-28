@@ -19,7 +19,7 @@ export default function Sidebar({ currentScore = 0 }: SidebarProps) {
   const closeMenu = () => setIsOpen(false);
 
   // Score color logic
-  let scoreColor = 'bg-slate-700 text-slate-300';
+  let scoreColor = 'bg-slate-700 text-slate-700';
   if (currentScore >= 70) scoreColor = 'bg-emerald-500 text-white';
   else if (currentScore >= 40) scoreColor = 'bg-amber-500 text-white';
   else if (currentScore > 0) scoreColor = 'bg-red-500 text-white';
@@ -28,7 +28,7 @@ export default function Sidebar({ currentScore = 0 }: SidebarProps) {
     `flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors ${
       isActive 
         ? 'bg-purple-accent/20 text-purple-light border border-purple-accent/30' 
-        : 'text-slate-400 hover:text-slate-200 hover:bg-navy-800'
+        : 'text-slate-400 hover:text-slate-800 hover:bg-slate-100'
     }`;
 
   return (
@@ -36,7 +36,7 @@ export default function Sidebar({ currentScore = 0 }: SidebarProps) {
       {/* Mobile Toggle Button */}
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="md:hidden fixed top-4 right-4 z-50 p-2 bg-navy-800 border border-slate-700 rounded-lg text-slate-300"
+        className="md:hidden fixed top-4 right-4 z-50 p-2 bg-slate-100 border border-slate-200 rounded-lg text-slate-700"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
@@ -46,14 +46,14 @@ export default function Sidebar({ currentScore = 0 }: SidebarProps) {
       {/* Backdrop */}
       {isOpen && (
         <div 
-          className="md:hidden fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-40"
+          className="md:hidden fixed inset-0 bg-transparent/80 backdrop-blur-sm z-40"
           onClick={closeMenu}
         />
       )}
 
       {/* Sidebar Navigation */}
       <nav 
-        className={`fixed md:translate-x-0 inset-y-0 left-0 z-40 w-[240px] bg-navy-900 border-r border-slate-800 flex flex-col transition-transform duration-300 ease-in-out ${
+        className={`fixed md:translate-x-0 inset-y-0 left-0 z-40 w-[240px] bg-white/80 border-r border-slate-300 flex flex-col transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -93,7 +93,7 @@ export default function Sidebar({ currentScore = 0 }: SidebarProps) {
           </div>
         </div>
 
-        <div className="mt-auto p-6 border-t border-slate-800">
+        <div className="mt-auto p-6 border-t border-slate-300">
           <button 
             onClick={handleSignOut}
             className="flex items-center gap-3 px-4 py-3 min-h-[44px] w-full rounded-lg font-medium text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition-colors"

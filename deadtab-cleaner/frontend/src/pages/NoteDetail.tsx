@@ -59,7 +59,7 @@ export default function NoteDetail() {
 
       <div className="glass-card overflow-hidden">
         {/* Header */}
-        <div className="p-6 md:p-8 bg-navy-900/40 border-b border-slate-700/50">
+        <div className="p-6 md:p-8 bg-white/40 border-b border-slate-200/50">
           <div className="flex items-start gap-4">
             <img 
               src={faviconUrl} 
@@ -86,7 +86,7 @@ export default function NoteDetail() {
         {/* AI Note Content */}
         <div className="p-6 md:p-8 space-y-8">
           {(!note || !note.summary) ? (
-            <div className="text-center py-10 text-slate-500 italic">
+            <div className="text-center py-10 text-slate-400 italic">
               AI note is currently being generated or failed to process.
             </div>
           ) : (
@@ -94,7 +94,7 @@ export default function NoteDetail() {
               {/* Intent */}
               {note.intentTag && (
                 <div>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Why you opened this</h3>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Why you opened this</h3>
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-purple-accent/10 border border-purple-accent/30 text-purple-light text-sm font-medium">
                     🎯 {note.intentTag}
                   </div>
@@ -103,19 +103,19 @@ export default function NoteDetail() {
 
               {/* Summary */}
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">AI Summary</h3>
-                <p className="text-slate-300 leading-relaxed text-lg bg-navy-950/30 p-5 rounded-xl border border-slate-800">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">AI Summary</h3>
+                <p className="text-slate-700 leading-relaxed text-lg bg-transparent/30 p-5 rounded-xl border border-slate-300">
                   {note.summary}
                 </p>
               </div>
 
               {/* Meta details */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-700/50">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-200/50">
                 <div>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Topic Tags</h3>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Topic Tags</h3>
                   <div className="flex flex-wrap gap-2">
                     {note.topicTags?.map((tag, idx) => (
-                      <span key={idx} className="px-2.5 py-1 rounded bg-navy-800 text-slate-300 text-sm">
+                      <span key={idx} className="px-2.5 py-1 rounded bg-slate-100 text-slate-700 text-sm">
                         #{tag}
                       </span>
                     ))}
@@ -123,8 +123,8 @@ export default function NoteDetail() {
                 </div>
                 
                 <div>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Estimated Read Time</h3>
-                  <div className="flex items-center gap-2 text-slate-300 font-medium">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Estimated Read Time</h3>
+                  <div className="flex items-center gap-2 text-slate-700 font-medium">
                     ⏱️ {Math.ceil((note.readTimeSeconds || 0) / 60)} min read ({note.readTimeSeconds}s)
                   </div>
                 </div>
@@ -134,8 +134,8 @@ export default function NoteDetail() {
         </div>
 
         {/* Footer Actions */}
-        <div className="p-6 bg-navy-950/50 border-t border-slate-700/50 flex flex-wrap items-center justify-between gap-4">
-          <div className="text-xs text-slate-500">
+        <div className="p-6 bg-transparent/50 border-t border-slate-200/50 flex flex-wrap items-center justify-between gap-4">
+          <div className="text-xs text-slate-400">
             Archived on {new Date(archive.archivedAt).toLocaleString()}
           </div>
           <div className="flex gap-3 w-full sm:w-auto">
